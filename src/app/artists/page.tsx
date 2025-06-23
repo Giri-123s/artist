@@ -2,7 +2,7 @@
 // Artist Listing page: shows all artists with filter controls and responsive grid
 
 "use client";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ArtistCard, { Artist } from "@/components/ArtistCard";
 import FilterBlock from "@/components/FilterBlock";
@@ -61,36 +61,38 @@ export default function ArtistsPage() {
   });
 
   return (
-    <main className="p-4 sm:p-8 bg-slate-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Artist Listing</h1>
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="md:w-64">
-          <FilterBlock
-            categories={categories}
-            locations={locations}
-            priceRanges={priceRanges}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-            selectedPrice={selectedPrice}
-            setSelectedPrice={setSelectedPrice}
-          />
+    <Suspense fallback={<div>Loading artists...</div>}>
+      <main className="p-4 sm:p-8 bg-slate-50 min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Artist Listing</h1>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="md:w-64">
+            <FilterBlock
+              categories={categories}
+              locations={locations}
+              priceRanges={priceRanges}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+              selectedPrice={selectedPrice}
+              setSelectedPrice={setSelectedPrice}
+            />
+          </div>
+          <div className="flex-1">
+            {loading ? (
+              <p>Loading...</p>
+            ) : filteredArtists.length === 0 ? (
+              <p className="text-gray-500">No artists found for selected filters.</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredArtists.map(artist => (
+                  <ArtistCard key={artist.id} artist={artist} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <div className="flex-1">
-          {loading ? (
-            <p>Loading...</p>
-          ) : filteredArtists.length === 0 ? (
-            <p className="text-gray-500">No artists found for selected filters.</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArtists.map(artist => (
-                <ArtistCard key={artist.id} artist={artist} />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </main>
+      </main>
+    </Suspense>
   );
 } 
