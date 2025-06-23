@@ -69,9 +69,9 @@ export default function ArtistOnboardPage() {
   });
 
   // Handle form submission: save new artist to localStorage
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: unknown) => {
     // Assign a unique id and map feeRange to priceRange
-    const { feeRange, image: _, ...rest } = data as ArtistFormData;
+    const { feeRange, ...rest } = data as ArtistFormData;
     let imageUrl = imageDataUrl;
     if (!imageUrl) {
       imageUrl = "/images/singer.jpg"; // fallback default image
