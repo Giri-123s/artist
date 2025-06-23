@@ -30,6 +30,16 @@ const schema = yup.object().shape({
   image: yup.mixed().notRequired(),
 });
 
+type ArtistFormData = {
+  name: string;
+  bio: string;
+  category: string[];
+  languages: string[];
+  feeRange: string;
+  location: string;
+  image: File | undefined;
+};
+
 /**
  * ArtistOnboardPage provides a multi-section form for onboarding new artists.
  * Handles image upload, validation, and saves new artists to localStorage.
@@ -45,8 +55,8 @@ export default function ArtistOnboardPage() {
     control,
     formState: { errors },
     setValue,
-  } = useForm({
-    resolver: yupResolver(schema),
+  } = useForm<ArtistFormData>({
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       name: "",
       bio: "",
@@ -59,9 +69,9 @@ export default function ArtistOnboardPage() {
   });
 
   // Handle form submission: save new artist to localStorage
-  const onSubmit = async (data: Record<string, unknown>) => {
+  const onSubmit = async (data: ArtistFormData) => {
     // Assign a unique id and map feeRange to priceRange
-    const { feeRange, ...rest } = data as any;
+    const { feeRange, image, ...rest } = data;
     let imageUrl = imageDataUrl;
     if (!imageUrl) {
       imageUrl = "/images/singer.jpg"; // fallback default image
