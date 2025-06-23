@@ -23,11 +23,11 @@ const categories = categoriesData as string[];
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   bio: yup.string().required("Bio is required"),
-  category: yup.array().min(1, "Select at least one category"),
-  languages: yup.array().min(1, "Select at least one language"),
+  category: yup.array().of(yup.string().required()).min(1, "Select at least one category").required(),
+  languages: yup.array().of(yup.string().required()).min(1, "Select at least one language").required(),
   feeRange: yup.string().required("Fee range is required"),
   location: yup.string().required("Location is required"),
-  image: yup.mixed().notRequired(),
+  image: yup.mixed().nullable().default(null),
 });
 
 type ArtistFormData = {
@@ -37,7 +37,7 @@ type ArtistFormData = {
   languages: string[];
   feeRange: string;
   location: string;
-  image: File | undefined;
+  image: File | null;
 };
 
 /**
@@ -55,8 +55,8 @@ export default function ArtistOnboardPage() {
     control,
     formState: { errors },
     setValue,
-  } = useForm<ArtistFormData>({
-    resolver: yupResolver(schema) as any,
+  } = useForm({
+    resolver: yupResolver(schema),
     defaultValues: {
       name: "",
       bio: "",
@@ -64,14 +64,14 @@ export default function ArtistOnboardPage() {
       languages: [],
       feeRange: "",
       location: "",
-      image: undefined,
+      image: null,
     },
   });
 
   // Handle form submission: save new artist to localStorage
-  const onSubmit = async (data: ArtistFormData) => {
+  const onSubmit = async (data: any) => {
     // Assign a unique id and map feeRange to priceRange
-    const { feeRange, image, ...rest } = data;
+    const { feeRange, image: _, ...rest } = data as ArtistFormData;
     let imageUrl = imageDataUrl;
     if (!imageUrl) {
       imageUrl = "/images/singer.jpg"; // fallback default image
