@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import categoriesData from "@/data/categories.json";
 
 const feeRanges = [
@@ -81,8 +82,8 @@ export default function ArtistOnboardPage() {
   };
 
   // Handle image file change: preview and convert to data URL
-  const imageFile = watch("image");
-  const handleImageChange = (e: any) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     const file = e.target.files[0];
     setValue("image", file);
     if (file) {
@@ -201,7 +202,14 @@ export default function ArtistOnboardPage() {
           <label className="block font-medium mb-1">Profile Image (optional)</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded-full" />
+            <Image
+              src={imagePreview}
+              alt="Preview"
+              width={96}
+              height={96}
+              className="mt-2 w-24 h-24 object-cover rounded-full"
+              unoptimized
+            />
           )}
         </div>
         {/* Location */}
