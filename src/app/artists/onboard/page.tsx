@@ -45,7 +45,6 @@ export default function ArtistOnboardPage() {
     control,
     formState: { errors },
     setValue,
-    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -60,9 +59,9 @@ export default function ArtistOnboardPage() {
   });
 
   // Handle form submission: save new artist to localStorage
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, unknown>) => {
     // Assign a unique id and map feeRange to priceRange
-    const { feeRange, image, ...rest } = data;
+    const { feeRange, ...rest } = data as any;
     let imageUrl = imageDataUrl;
     if (!imageUrl) {
       imageUrl = "/images/singer.jpg"; // fallback default image

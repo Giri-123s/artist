@@ -21,11 +21,13 @@ export default function Table<T>({ columns, data, renderActions }: TableProps<T>
         <tbody>
           {data.map((row, i) => (
             <tr key={i} className="hover:bg-slate-50">
-              {columns.map(col => (
-                <td key={String(col.key)} className="px-4 py-2 border-b">
-                  {Array.isArray(row[col.key]) ? (row[col.key] as any[]).join(", ") : (row[col.key] as React.ReactNode)}
-                </td>
-              ))}
+              {columns.map(col => {
+                const value = row[col.key];
+                if (Array.isArray(value) && value.every(v => typeof v === "string")) {
+                  return <td key={String(col.key)} className="px-4 py-2 border-b">{(value as string[]).join(", ")}</td>;
+                }
+                return <td key={String(col.key)} className="px-4 py-2 border-b">{value as React.ReactNode}</td>;
+              })}
               {renderActions && (
                 <td className="px-4 py-2 border-b">{renderActions(row)}</td>
               )}
