@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Shivam",
+    "category": ["Singer"],
+    "priceRange": "₹20,000 - ₹50,000",
+    "location": "Mumbai",
+    "languages": ["Hindi", "English"],
+    "image": "/images/Shiva.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Vishal Singh",
+    "category": ["Dancer"],
+    "priceRange": "₹15,000 - ₹30,000",
+    "location": "Delhi",
+    "languages": ["Hindi"],
+    "image": "/images/Vishal.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Kundan Jha",
+    "category": ["Speaker"],
+    "priceRange": "₹10,000 - ₹25,000",
+    "location": "Bangalore",
+    "languages": ["English", "Malayalam"],
+    "image": "/images/Kundan.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Saket Jha",
+    "category": ["DJ"],
+    "priceRange": "₹25,000 - ₹60,000",
+    "location": "Goa",
+    "languages": ["English"],
+    "image": "/images/Saket.jpg"
+  }
+] 
